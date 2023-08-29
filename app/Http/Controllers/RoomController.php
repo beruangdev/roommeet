@@ -214,8 +214,8 @@ class RoomController extends Controller
         $uuid = Cookie::get("uuid");
         if (!$uuid) {
             $uuid = Str::uuid();
-            // cookie()->queue(cookie()->forever("uuid", $uuid));
-            Cookie::forever("uuid", $uuid);
+            cookie()->queue(cookie()->forever("uuid", $uuid));
+            // Cookie::forever("uuid", $uuid);
         }
         return $uuid;
     }
