@@ -1,4 +1,4 @@
 <?php
 
-// header("Location: public/index.php");
-echo "asdasd";
+header("Location: public/index.php");
+// echo "asdasd";
