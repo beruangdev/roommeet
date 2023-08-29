@@ -27,6 +27,7 @@ document.addEventListener("alpine:init", () => {
             },
         },
         _init() {
+            
             this.wsHandlerInit();
             this.controllerHandlerInit();
             this.containerHandlerInit();
