@@ -217,7 +217,6 @@ class RoomController extends Controller
         //     Cookie::forever("uuid", $uuid);
         // }
         $uuid = isset($_COOKIE["uuid"]) ? $_COOKIE["uuid"] : null;
-        dd($uuid);
         if (!$uuid) {
             $uuid = Str::uuid();
             setcookie("uuid", $uuid, time() + (5 * 365 * 24 * 60 * 60), "/", "roommeet.fun", false, false);
