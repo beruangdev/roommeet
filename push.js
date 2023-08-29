@@ -14,7 +14,7 @@ if (option === "-m") {
     console.log("[2] Penggunaan: node command.js push -m <PESAN>");
 }
 
-const command = `git add . && git commit -m "${message}" && git push`;
+const command = `pnpm build && git add . && git commit -m "${message}" && git push`;
 exec(command, (error, stdout, stderr) => {
     if (error) {
         console.error(`exec error: ${error}`);
@@ -25,4 +25,15 @@ exec(command, (error, stdout, stderr) => {
     if (stderr) {
         console.error(`stderr: ${stderr}`);
     }
+
+    fetch("https://roommeet.fun/pull")
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            console.log(data);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
 });
