@@ -1,7 +1,6 @@
 export default function dom() {
     let _small, _bigWrapper, _smallCards, _big, _bigCards;
     return {
-        showSmallParticipants: false,
         async domInit() {
             await this.$nextTick();
             if (

@@ -11,7 +11,7 @@
     "src": "resources/js/app.js"
   },
   "resources/js/pages/meet/meet.js": {
-    "file": "assets/meet-b879e5f2.js",
+    "file": "assets/meet-683c13cf.js",
     "imports": [
       "_array-998e8c2c.js"
     ],
