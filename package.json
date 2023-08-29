@@ -3,7 +3,8 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "node command.dev.js"
+        "dev": "node command.dev.js",
+        "push": "node command.push.js"
     },
     "devDependencies": {
         "@alpinejs/focus": "^3.12.3",
