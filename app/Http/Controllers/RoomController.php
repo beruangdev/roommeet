@@ -116,7 +116,7 @@ class RoomController extends Controller
             $room_uuid = $request->input("room");
             $password = $request->input("password", null);
             $user_name = $request->input("name", null);
-
+            dd("qdqwd");
             $user = auth()->user();
 
             $room = Room::where('uuid', $room_uuid)->whereNull("ended_at")->orderBy('id', 'DESC')->first();
