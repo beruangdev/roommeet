@@ -1,0 +1,25 @@
+.card-participant {
+    @apply bg-background-200 dark:bg-background-850 relative items-center justify-center max-h-screen;
+    order: attr(data-order);
+
+    .participant__video-audio {
+        @apply absolute left-2 top-2 flex gap-x-2 rounded-md bg-background-100/50 dark:bg-background-925/50 px-3 py-1 text-black dark:text-white backdrop-blur-sm;
+
+        svg.enabled {
+            @apply h-3 w-3 text-background-800 dark:text-background-100;
+        }
+        svg.disabled {
+            @apply h-3 w-3 text-red-400;
+        }
+    }
+    .participant__name {
+        @apply absolute bottom-2 left-2 rounded-md bg-background-100/50 dark:bg-background-925/50 px-1.5 py-0.5 text-background-800 dark:text-white backdrop-blur-sm text-[0.5rem] md:text-xs;
+    }
+}
+.big-videos {
+    .card-participant {
+        .participant__name {
+            @apply text-xs;
+        }
+    }
+}

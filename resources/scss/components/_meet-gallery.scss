@@ -1,0 +1,17 @@
+[viewtype="gallery"] {
+    .big-videos {
+        @apply hidden;
+    }
+
+    .small-videos {
+        @apply flex h-screen flex-1 flex-wrap justify-center;
+
+        .gallery {
+            @apply relative w-full overflow-y-auto;
+
+            .wrapper-videos {
+                @apply flex h-full min-h-screen flex-wrap content-center items-center justify-center gap-2;
+            }
+        }
+    }
+}

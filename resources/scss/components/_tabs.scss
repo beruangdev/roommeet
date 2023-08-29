@@ -1,0 +1,18 @@
+ul[role="tablist"] {
+    @apply text-sm font-medium text-center text-background-500 divide-x divide-background-200 rounded-lg shadow flex dark:divide-background-700 dark:text-background-400 overflow-hidden;
+
+    li {
+        @apply w-full;
+
+        a,
+        button {
+            &[aria-selected="true"] {
+                @apply inline-block bg-white w-full p-4 text-background-900  dark:bg-background-700 dark:text-white;
+            }
+
+            &[aria-selected="false"] {
+                @apply inline-block w-full p-4 bg-background-100  hover:text-background-700 hover:bg-background-50 dark:hover:text-white dark:bg-background-800 dark:hover:bg-background-700;
+            }
+        }
+    }
+}

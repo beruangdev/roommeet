@@ -1,0 +1,21 @@
+@tailwind base;
+@layer base {
+    @import "costum-base";
+}
+@tailwind components;
+@layer components {
+    @import "./components/tabs";
+}
+@tailwind utilities;
+
+[x-cloak] {
+    display: none;
+}
+
+@import "./components/socialstream";
+
+@import "./components/meet";
+@import "./components/meet-gallery";
+@import "./components/meet-speaker";
+@import "./components/meet-1by1";
+@import "./components/meet_card";

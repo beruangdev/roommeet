@@ -1,0 +1,2 @@
+!translate-x-0
+!translate-x-full

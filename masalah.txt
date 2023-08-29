@@ -1,0 +1,5 @@
+ada beberapa masalah yang muncul:
+1. client hanya memiliki peer lawan bicara dan tidak memiliki peernya sendiri, saya tidak tau cara mengatasinya.
+2. setiap salah satu orang refresh halaman, video di device orang lain akan terlihat seperti blink.
+3. saat seseorang toggle video dari mati ke hidup, maka video akan tetap macet.
+refactor kode saya:

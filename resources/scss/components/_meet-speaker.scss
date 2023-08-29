@@ -1,0 +1,27 @@
+[viewtype="speaker"] {
+    @apply flex;
+
+    .big-videos {
+        @apply flex h-screen flex-1 flex-wrap justify-center;
+
+        .gallery {
+            @apply relative w-full overflow-y-auto;
+
+            .wrapper-videos {
+                @apply flex h-full min-h-screen flex-wrap content-center items-center justify-center gap-2 p-2;
+
+                .card-participant {
+                    @apply max-h-[calc(100vh-1rem)];
+                }
+            }
+        }
+    }
+
+    .small-videos {
+        @apply fixed right-0 top-0 h-screen max-h-screen w-52 overflow-y-auto whitespace-nowrap duration-500 md:block md:w-52 md:relative md:translate-x-0 translate-x-full;
+
+        .wrapper-videos {
+            @apply space-y-2 flex flex-col;
+        }
+    }
+}

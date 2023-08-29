@@ -1,0 +1,38 @@
+// meet-1by1.scss
+[viewtype="1:1"] {
+    @apply flex h-screen max-h-screen w-full flex-col;
+
+    .big-videos {
+        @apply order-10;
+
+        .wrapper-videos {
+            //  gap-3
+            @apply flex gap-1 w-full flex-wrap content-center items-center justify-center;
+            @apply md:flex-nowrap md:gap-3 md:px-8;
+
+            .card-participant {
+                @apply h-1/2 md:max-h-[90%] w-full basis-full md:aspect-[16/12] md:h-fit;
+            }
+
+            &:only-child {
+                @apply md:basis-full;
+            }
+
+            &:not(:only-child) {
+                @apply md:basis-[49%];
+            }
+        }
+    }
+
+    .small-videos {
+        @apply order-5;
+
+        .wrapper-videos {
+            @apply hidden max-w-[100vw] justify-center gap-2 overflow-x-auto whitespace-nowrap md:block;
+
+            .card-participant {
+                @apply inline-block w-[40%] sm:w-[30%] md:w-[23%] lg:w-[17%] 2xl:w-[12%] mr-2;
+            }
+        }
+    }
+}

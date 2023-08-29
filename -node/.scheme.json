@@ -1,0 +1,174 @@
+[
+  {
+    "tableName": "participants",
+    "columns": [
+      {
+        "name": "id",
+        "type": "bigint(20) unsigned"
+      },
+      {
+        "name": "uuid",
+        "type": "varchar(255)"
+      },
+      {
+        "name": "name",
+        "type": "varchar(255)"
+      },
+      {
+        "name": "user_id",
+        "type": "bigint(20) unsigned"
+      },
+      {
+        "name": "room_id",
+        "type": "bigint(20) unsigned"
+      },
+      {
+        "name": "status",
+        "type": "enum('in_lobby','in_room','left')",
+        "comment": "Menentukan apakah partisipan berada di dalam lobby, ruangan, atau telah meninggalkan ruangan"
+      },
+      {
+        "name": "approved",
+        "type": "tinyint(1)"
+      },
+      {
+        "name": "creator",
+        "type": "tinyint(1)"
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp"
+      },
+      {
+        "name": "updated_at",
+        "type": "timestamp"
+      }
+    ]
+  },
+  {
+    "tableName": "rooms",
+    "columns": [
+      {
+        "name": "id",
+        "type": "bigint(20) unsigned"
+      },
+      {
+        "name": "uuid",
+        "type": "varchar(255)"
+      },
+      {
+        "name": "name",
+        "type": "varchar(255)"
+      },
+      {
+        "name": "password",
+        "type": "varchar(255)"
+      },
+      {
+        "name": "videoEnabled",
+        "type": "tinyint(1)"
+      },
+      {
+        "name": "audioEnabled",
+        "type": "tinyint(1)"
+      },
+      {
+        "name": "trackParticipantTimelineEnabled",
+        "type": "tinyint(1)"
+      },
+      {
+        "name": "trackParticipantCamTimelineEnabled",
+        "type": "tinyint(1)"
+      },
+      {
+        "name": "trackParticipantFaceTimelineEnabled",
+        "type": "tinyint(1)"
+      },
+      {
+        "name": "lobbyEnabled",
+        "type": "tinyint(1)"
+      },
+      {
+        "name": "timeline",
+        "type": "longtext"
+      },
+      {
+        "name": "camTimeline",
+        "type": "longtext"
+      },
+      {
+        "name": "faceTimeline",
+        "type": "longtext"
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp"
+      },
+      {
+        "name": "updated_at",
+        "type": "timestamp"
+      }
+    ]
+  },
+  {
+    "tableName": "users",
+    "columns": [
+      {
+        "name": "id",
+        "type": "bigint(20) unsigned"
+      },
+      {
+        "name": "name",
+        "type": "varchar(255)"
+      },
+      {
+        "name": "email",
+        "type": "varchar(255)"
+      },
+      {
+        "name": "email_verified_at",
+        "type": "timestamp"
+      },
+      {
+        "name": "password",
+        "type": "varchar(255)"
+      },
+      {
+        "name": "two_factor_secret",
+        "type": "text"
+      },
+      {
+        "name": "two_factor_recovery_codes",
+        "type": "text"
+      },
+      {
+        "name": "two_factor_confirmed_at",
+        "type": "timestamp"
+      },
+      {
+        "name": "remember_token",
+        "type": "varchar(100)"
+      },
+      {
+        "name": "current_team_id",
+        "type": "bigint(20) unsigned"
+      },
+      {
+        "name": "current_connected_account_id",
+        "type": "bigint(20) unsigned"
+      },
+      {
+        "name": "profile_photo_path",
+        "type": "text"
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp"
+      },
+      {
+        "name": "updated_at",
+        "type": "timestamp"
+      }
+    ]
+  }
+]
