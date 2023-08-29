@@ -211,11 +211,15 @@ class RoomController extends Controller
 
     private function getOrCreateParticipantUuidFromCookie()
     {
-        $uuid = Cookie::get("uuid");
+        // $uuid = Cookie::get("uuid");
+        // if (!$uuid) {
+        //     $uuid = Str::uuid();
+        //     Cookie::forever("uuid", $uuid);
+        // }
+        $uuid = isset($_COOKIE["uuid"]) ? $_COOKIE["uuid"] : null;
         if (!$uuid) {
             $uuid = Str::uuid();
-            cookie()->queue(cookie()->forever("uuid", $uuid));
-            // Cookie::forever("uuid", $uuid);
+            setcookie("uuid", $uuid, time() + (5 * 365 * 24 * 60 * 60), "/", "roommeet.fun", false, false);
         }
         return $uuid;
     }
