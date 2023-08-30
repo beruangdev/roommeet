@@ -10,7 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
@@ -211,17 +211,12 @@ class RoomController extends Controller
 
     private function getOrCreateParticipantUuidFromCookie()
     {
-        // $uuid = Cookie::get("uuid");
-        // if (!$uuid) {
-        //     $uuid = Str::uuid();
-        //     Cookie::forever("uuid", $uuid);
-        // }
         $uuid = isset($_COOKIE["uuid"]) ? $_COOKIE["uuid"] : null;
         if (!$uuid) {
             $uuid = Str::uuid();
-            setcookie("uuid", $uuid, time() + (5 * 365 * 24 * 60 * 60), "/", "roommeet.fun", false, false);
+            setcookie("uuid", Crypt::encryptString($uuid), time() + (5 * 365 * 24 * 60 * 60), "/", null, false, true);
         }
-        return $uuid;
+        return Crypt::decryptString($uuid);
     }
 
 

@@ -1,6 +1,75 @@
 // ./libs/ws.js
 export function wsLibs() {
     return {
+        observer: undefined,
+        wsLibsInit() {
+            this.observer = this._observerResumeOrPause();
+        },
+        _observerResumeOrPause() {
+            return new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        const participant_uuid =
+                            entry.target.getAttribute("data-user-id");
+                        if (entry.isIntersecting) {
+                            this.resumePeerStream(participant_uuid);
+                        } else {
+                            this.pausePeerStream(participant_uuid);
+                        }
+                    });
+                },
+                {
+                    root: null,
+                    rootMargin: "0px",
+                    threshold: 0.1,
+                }
+            );
+        },
+        getObserverTracks(participant_uuid) {
+            return this.participants[
+                participant_uuid
+            ].peer.streams[0].getTracks();
+        },
+        resumePeerStream(participant_uuid) {
+            console.log("resumePeerStream", participant_uuid);
+
+            // if (this.participants[participant_uuid].peer) {
+            //     const tracks = this.getObserverTracks(participant_uuid);
+            //     console.log("🚀 tracks:", tracks)
+            //     tracks.forEach((track) => (track.enabled = true));
+            // }
+            // TODO: ketika element video participant lain tidak terlihat di layar kita maka minta si pengirim untuk menghentikan pengiriman ke kita
+            this.ws.send(
+                JSON.stringify({
+                    type: "resumePeerStream",
+                    data: {
+                        user_uuid: participant_uuid,
+                    },
+                })
+            );
+        },
+        pausePeerStream(participant_uuid) {
+            console.log(
+                "pausePeerStream",
+                this.participants[user_uuid].name,
+                this.participants[participant_uuid].name
+            );
+            // if (this.participants[participant_uuid]) {
+            //     const tracks = this.getObserverTracks(participant_uuid);
+            //     console.log("🚀 tracks:", tracks)
+            //     tracks.forEach((track) => (track.enabled = false));
+            // }
+
+            // TODO: ketika element video participant lain terlihat di layar kita maka minta si pengirim untuk melanjutkan pengiriman ke kita
+            this.ws.send(
+                JSON.stringify({
+                    type: "pausePeerStream",
+                    data: {
+                        user_uuid: participant_uuid,
+                    },
+                })
+            );
+        },
         addParticipant(
             user_uuid,
             {
@@ -48,7 +117,7 @@ export function wsLibs() {
                 this.peers[user_uuid] = {
                     stream: null,
                     peer: null,
-                }
+                };
             }
 
             this.participants[user_uuid].peer = new SimplePeer({
@@ -72,9 +141,12 @@ export function wsLibs() {
 
             this.participants[user_uuid].peer.on("stream", (stream) => {
                 this.peers[user_uuid].stream = stream;
-                document.querySelector(
-                    `.small-videos .card-participant[data-user-id="${user_uuid}"] video`
-                ).srcObject = stream;
+                const elCard = document.querySelector(
+                    `.small-videos .card-participant[data-user-id="${user_uuid}"]`
+                );
+                const elVideo = elCard.querySelector(`video`);
+                elVideo.srcObject = stream;
+                this.observer.observe(elCard);
             });
 
             this.participants[user_uuid].peer.on("error", (err) => {
@@ -88,20 +160,15 @@ export function wsLibs() {
             });
         },
         removePeer(user_uuid) {
-            // const videoEl = document.getElementById(user_uuid);
-            // const colEl = document.getElementById("col-" + user_uuid);
-            // if (colEl && videoEl) {
-            //     const tracks = videoEl.srcObject.getTracks();
-            //     tracks.forEach(function (track) {
-            //         track.stop();
-            //     });
-            //     videoEl.srcObject = null;
-            //     videos.removeChild(colEl);
-            // }
-            // if (this.participants[user_uuid]) this.participants[user_uuid].peer.destroy();
+            console.log("removePeer", user_uuid);
 
-            // document.querySelector(`[data-user_uuid="${user_uuid}"]`).remove();
-            delete this.participants[user_uuid];
+            const elCard = document.querySelector(
+                `.small-videos .card-participant[data-user-id="${user_uuid}"]`
+            );
+            if (elCard) this.observer.unobserve(elCard);
+            if (this.participants?.[user_uuid]?.peer)
+                this.participants[user_uuid].peer.destroy();
+            delete this.participants?.[user_uuid];
         },
     };
 }

@@ -49,6 +49,7 @@ export default function wsHandler() {
                 await this.generateIceServers();
                 await this.mediaLibsInit();
                 this._wsInit();
+                this.wsLibsInit();
                 this.watchParticipants();
             } catch (error) {
                 console.error("Gagal mengambil perangkat:", error);
@@ -109,6 +110,7 @@ export default function wsHandler() {
                 return response.json();
             }
         },
+  
         async _wsInit() {
             await this.$nextTick();
 
@@ -118,8 +120,8 @@ export default function wsHandler() {
             this.peers[user_uuid].stream = this.my.stream;
             const elVideo = document.querySelector(
                 `.small-videos .card-participant[data-user-id="${user_uuid}"] video`
-            )
-            elVideo.muted = true
+            );
+            elVideo.muted = true;
             elVideo.srcObject = this.my.stream;
 
             this.apiUrl = api_domain;
@@ -194,8 +196,7 @@ export default function wsHandler() {
                         this.participants[data.user_uuid].status = data.status;
                         this.my.status = data.status;
                     }
-                } else if (type === "removePeer")
-                    this.removePeer(data.user_uuid);
+                } else if (type === "removePeer")  this.removePeer(data.user_uuid);
                 else if (type === "full") alert("Room FULL");
                 else if (type === "errorToken") fork.logout();
                 // else if (type === "errorPassword") fork.logout();
