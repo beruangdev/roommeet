@@ -27,25 +27,19 @@ export function mediaLibs() {
                 1
             );
 
-            console.log({
-                downlink,
-                participants: participants,
-            });
-
             const availableBandwidth = Math.min(
                 downlink / participants,
                 MAX_BANDWIDTH
             );
 
             const settings = [
-                // { limit: 2, video: { quality: "low", frameRate: 15, resolution: { width: 320, height: 240 }, bitrate: 300 }, audio: { quality: "low", bitrate: 64 } },
                 {
-                    limit: 2,
+                    limit: 1000,
                     video: {
                         quality: "high",
-                        frameRate: 20,
-                        resolution: { width: 240, height: 240 },
-                        bitrate: 700,
+                        frameRate: 30,
+                        resolution: { width: 1280, height: 720 },
+                        bitrate: 2500,
                     },
                     audio: { quality: "high", bitrate: 128 },
                 },
@@ -60,14 +54,74 @@ export function mediaLibs() {
                     audio: { quality: "high", bitrate: 128 },
                 },
                 {
-                    limit: Infinity,
+                    limit: 2,
                     video: {
-                        quality: "high",
-                        frameRate: 30,
-                        resolution: { width: 1280, height: 720 },
-                        bitrate: 2500,
+                        quality: "medium",
+                        frameRate: 20,
+                        resolution: { width: 320, height: 320 },
+                        bitrate: 700,
                     },
                     audio: { quality: "high", bitrate: 128 },
+                },
+                {
+                    limit: 1.5,
+                    video: {
+                        quality: "low",
+                        frameRate: 15,
+                        resolution: { width: 240, height: 240 },
+                        bitrate: 500,
+                    },
+                    audio: { quality: "medium", bitrate: 64 },
+                },
+                {
+                    limit: 1,
+                    video: {
+                        quality: "low",
+                        frameRate: 15,
+                        resolution: { width: 240, height: 240 },
+                        bitrate: 400,
+                    },
+                    audio: { quality: "low", bitrate: 48 },
+                },
+                {
+                    limit: 0.75,
+                    video: {
+                        quality: "veryLow",
+                        frameRate: 10,
+                        resolution: { width: 180, height: 180 },
+                        bitrate: 300,
+                    },
+                    audio: { quality: "low", bitrate: 36 },
+                },
+                {
+                    limit: 0.5,
+                    video: {
+                        quality: "veryLow",
+                        frameRate: 10,
+                        resolution: { width: 160, height: 160 },
+                        bitrate: 200,
+                    },
+                    audio: { quality: "veryLow", bitrate: 32 },
+                },
+                {
+                    limit: 0.3,
+                    video: {
+                        quality: "minimal",
+                        frameRate: 7,
+                        resolution: { width: 120, height: 120 },
+                        bitrate: 100,
+                    },
+                    audio: { quality: "veryLow", bitrate: 24 },
+                },
+                {
+                    limit: 0.2,
+                    video: {
+                        quality: "minimal",
+                        frameRate: 5,
+                        resolution: { width: 90, height: 90 },
+                        bitrate: 80,
+                    },
+                    audio: { quality: "minimal", bitrate: 16 },
                 },
             ];
 
@@ -75,13 +129,31 @@ export function mediaLibs() {
                 if (availableBandwidth < setting.limit) {
                     this.constraints = {
                         video: setting.video,
-                        audio: setting.audio,
+                        audio: {
+                            quality: "high",
+                            bitrate: 128,
+                            echoCancellation: true,
+                            noiseSuppression: true,
+                            autoGainControl: true,
+                            sampleRate: { ideal: 48000 },
+                            sampleSize: { ideal: 24 },
+                        },
                     };
+                    break; // Keluar dari loop setelah menemukan setting yang sesuai
                 }
             }
+
+            // Jika tidak ada setting yang sesuai, gunakan pengaturan default
+            if (!this.constraints) {
+                this.constraints = {
+                    video: settings[settings.length - 1].video,
+                    audio: { quality: "high", bitrate: 128 },
+                };
+            }
+
             console.log("Available bandwidth:", availableBandwidth);
             console.log(
-                "UPDATE constraints : ",
+                "UPDATE constraints :",
                 JSON.parse(JSON.stringify(this.constraints))
             );
         },
