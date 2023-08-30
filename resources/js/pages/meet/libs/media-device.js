@@ -33,9 +33,9 @@ export function mediaLibs() {
                 {
                     limit: 2,
                     video: {
-                        quality: "medium",
+                        quality: "high",
                         frameRate: 20,
-                        resolution: { width: 640, height: 320 },
+                        resolution: { width: 640, height: 480 },
                         bitrate: 700,
                     },
                     audio: { quality: "high", bitrate: 128 },
@@ -70,6 +70,8 @@ export function mediaLibs() {
                     });
                 }
             }
+            console.log('Available bandwidth:', availableBandwidth);
+            console.log("UPDATE constraints : ", this.constraints);
         },
 
         async updateConstraints2() {
