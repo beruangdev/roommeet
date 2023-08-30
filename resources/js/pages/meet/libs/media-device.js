@@ -77,6 +77,8 @@ export function mediaLibs() {
             } else {
                 this.constraints.audio = false;
             }
+
+            console.log("UPDATE constraints : ", this.constraints);
         },
 
         async generateIceServers() {
