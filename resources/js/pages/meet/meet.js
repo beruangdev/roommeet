@@ -7,7 +7,8 @@ document.addEventListener("alpine:init", () => {
         room,
         my: {
             video_enabled: room.video_enabled,
-            audio_enabled: room.audio_enabled,
+            // audio_enabled: room.audio_enabled,
+            audio_enabled: false,
             cameraDeviceId: undefined,
             microphoneDeviceId: undefined,
             cameras: [],

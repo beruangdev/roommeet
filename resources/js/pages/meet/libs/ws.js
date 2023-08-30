@@ -49,6 +49,7 @@ export function wsLibs() {
             );
         },
         pausePeerStream(participant_uuid) {
+            if (!this.participants[participant_uuid]) return false;
             console.log(
                 "pausePeerStream",
                 this.participants[user_uuid].name,
@@ -96,6 +97,7 @@ export function wsLibs() {
         },
         async addPeer(data, am_initiator) {
             const { user_uuid, name, approved, creator } = data;
+            console.log("🚀 ~ file: ws.js:99 ~ addPeer ~ data:", data);
 
             const configuration = {
                 iceServers: this.iceServers,

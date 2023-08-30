@@ -16,8 +16,8 @@ export function mediaLibs() {
         constraints: {},
 
         updateConstraints() {
-            const MAX_BANDWIDTH = 12;
-            const DEFAULT_DOWNLINK = 10;
+            const MAX_BANDWIDTH = 1 * 8;
+            const DEFAULT_DOWNLINK = 0.6 * 8;
             const downlink = navigator.connection
                 ? navigator.connection.downlink
                 : DEFAULT_DOWNLINK;
