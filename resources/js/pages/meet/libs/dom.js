@@ -7,7 +7,9 @@ export default function dom() {
                 window.location.hostname === "localhost" ||
                 window.location.hostname === "127.0.0.1"
             ) {
-                window.addEventListener("resize", this.resizeCards);
+                window.addEventListener("resize", () => {
+                    this.resizeCards();
+                });
             }
             this.resizeCards();
         },
@@ -21,7 +23,7 @@ export default function dom() {
             }
         },
         async resizeCards() {
-            await this.$nextTick();
+            if (this.$nextTick) await this.$nextTick();
             _small = document.querySelector(`[viewtype] .small-videos`);
             _smallCards = _small.querySelectorAll(".card-participant");
             _big = document.querySelector(`[viewtype] .big-videos`);

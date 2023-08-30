@@ -70,8 +70,50 @@ export default function wsHandler() {
             //     });
             // });
         },
+
+        getApiDomain() {
+            const api_order = room.uuid[0];
+            return `https://roommeet-${api_order}.deno.dev`;
+        },
+        async _joinRoom() {
+            await this.$nextTick();
+            const api_domain = this.getApiDomain();
+            const url = `${api_domain}/api/join-or-create`;
+            const data = {
+                room_uuid: room.uuid,
+                room_name: room.name,
+                password: room.password,
+                creator_uuid: room.creator_uuid,
+                user_uuid: participant.uuid,
+                user_name: participant.name,
+                approved: true,
+                is_creator: true,
+                video_enabled: true,
+                audio_enabled: true,
+                participant_timeline_enabled: false,
+                cam_timeline_enabled: false,
+                face_timeline_enabled: false,
+                lobby_enabled: false,
+                started_at: "2023-08-30T07:51:39.000000Z",
+            };
+
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (response.ok) {
+                return response.json();
+            }
+        },
         async _wsInit() {
             await this.$nextTick();
+
+            const { token } = await this._joinRoom();
+            const api_domain = this.getApiDomain();
 
             this.peers[user_uuid].stream = this.my.stream;
             document.querySelector(

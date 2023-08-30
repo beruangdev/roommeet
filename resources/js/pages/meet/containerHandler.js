@@ -5,7 +5,6 @@ import dom from './libs/dom';
 
 export default function containerHandler() {
     return {
-        showSmallParticipants: false,
         viewType: undefined,
         list: [],
         containerHandlerInit() {

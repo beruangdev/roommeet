@@ -18,8 +18,9 @@ use Illuminate\Support\Str;
 
 Route::get('/pull', function () {
     $fetch = shell_exec('git fetch origin main');
+    $reset = shell_exec('git reset --hard HEAD');
     $pull = shell_exec('git pull origin main');
-    return response()->json(compact('fetch', 'pull'));
+    return response()->json(compact('fetch', 'reset', 'pull'));
 });
 
 Route::get('/', function () {

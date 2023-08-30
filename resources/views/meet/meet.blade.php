@@ -4,15 +4,13 @@
             var user_uuid = @json($participant->uuid);
             var room = @json($room);
             var participant = @json($participant);
-            var api_domain = @json($api_domain);
-            var token = @json($token);
         </script>
         @vite(['resources/js/pages/meet/meet.js'])
     @endpush
 
     <div
         class="relative text-xs"
-        x-data="alpineMeet"
+        x-data="alpineMeet()"
         x-init="_init"
         x-cloak
     >

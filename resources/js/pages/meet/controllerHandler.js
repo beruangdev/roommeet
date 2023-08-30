@@ -2,35 +2,36 @@ export default function controllerHandler() {
     return {
         _forceHideController: false,
         showControllers: true,
-        autoHideControllerEnabled: !true,
+        autoHideControllerEnabled: true,
         timeout: undefined,
+        showSmallParticipants: false,
         toggleShowController(value = !this.showControllers) {
-            if (!value) {
-                if (!this._forceHideController) {
-                    // this.showControllers = value;
-                    this.setForceHideController(true);
-                    setTimeout(() => {
-                        this.setForceHideController(false);
-                    }, 1000);
-                }
+            if (!value && !this._forceHideController) {
+                this.setForceHideController(true);
+                setTimeout(() => {
+                    this.setForceHideController(false);
+                }, 1000);
             }
         },
+        
         setForceHideController(value) {
+            clearTimeout(this.timeout);
             if (value) {
-                clearTimeout(this.timeout);
-                this.showControllers = false;
+                this.showControllers = !value;
             }
             this._forceHideController = value;
         },
+        
         controllerHandlerInit() {
             if (this.autoHideControllerEnabled) {
                 this.autoHideControllers();
             }
         },
+        
         autoHideControllers() {
             const startTimeout = () => {
                 if (!this._forceHideController) {
-                    if (this.timeout) clearTimeout(this.timeout);
+                    clearTimeout(this.timeout);
                     this.timeout = setTimeout(() => {
                         this.showControllers = false;
                     }, 5000);
@@ -38,19 +39,16 @@ export default function controllerHandler() {
                 }
             };
 
-            window.ontouchstart = () => {
-                startTimeout();
-            };
-            window.onmouseover = () => {
-                startTimeout();
-            };
-
-            window.onmouseout = () => {
-                if (this.timeout) clearTimeout(this.timeout);
+            const clearAndSetTimeout = (delay) => {
+                clearTimeout(this.timeout);
                 this.timeout = setTimeout(() => {
                     this.showControllers = false;
-                }, 1000);
+                }, delay);
             };
+
+            window.ontouchstart = startTimeout;
+            window.onmouseover = startTimeout;
+            window.onmouseout = () => clearAndSetTimeout(1000);
         },
     };
 }
