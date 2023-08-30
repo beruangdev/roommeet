@@ -35,7 +35,7 @@ export function mediaLibs() {
                     video: {
                         quality: "medium",
                         frameRate: 20,
-                        resolution: { width: 320, height: 240 },
+                        resolution: { width: 640, height: 320 },
                         bitrate: 700,
                     },
                     audio: { quality: "high", bitrate: 128 },
