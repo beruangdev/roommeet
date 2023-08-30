@@ -33,7 +33,7 @@ export function mediaLibs() {
                 {
                     limit: 2,
                     video: {
-                        quality: "low",
+                        quality: "medium",
                         frameRate: 20,
                         resolution: { width: 320, height: 240 },
                         bitrate: 700,
