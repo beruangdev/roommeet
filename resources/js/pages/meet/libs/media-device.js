@@ -19,9 +19,12 @@ export function mediaLibs() {
                 // { min: 2, width: 1920, height: 1080, frameRate: 30 },
                 // { min: 1.5, width: 1280, height: 720, frameRate: 30 },
                 // { min: 1, width: 640, height: 360, frameRate: 26 },
-                { min: 0.5, width: 640, height: 360, frameRate: 24 },
-                { min: 0.2, width: 480, height: 270, frameRate: 20 },
-                { min: 0, width: 320, height: 180, frameRate: 15 },
+                // { min: 0.5, width: 640, height: 360, frameRate: 24 },
+                // { min: 0.2, width: 480, height: 270, frameRate: 20 },
+                // { min: 0, width: 320, height: 180, frameRate: 15 },
+                { min: 0.5, width: 480, height: 270, frameRate: 24 },
+                { min: 0.2, width: 240, height: 135, frameRate: 20 },
+                { min: 0, width: 120, height: 90, frameRate: 15 },
             ];
 
             const downlinkMbps = navigator.connection.downlink / 8;
