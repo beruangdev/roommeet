@@ -114,7 +114,7 @@ export default function wsHandler() {
 
             const { token } = await this._joinRoom();
             const api_domain = this.getApiDomain();
-
+            
             this.peers[user_uuid].stream = this.my.stream;
             document.querySelector(
                 `.small-videos .card-participant[data-user-id="${user_uuid}"] video`
