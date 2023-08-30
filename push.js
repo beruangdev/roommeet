@@ -15,7 +15,7 @@ if (option === "-m") {
 }
 
 const commands = [
-    // "pnpm build",
+    "pnpm build",
     "git add .",
     `git commit -m "${message}"`,
     "git push",
