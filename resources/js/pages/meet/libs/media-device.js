@@ -21,7 +21,16 @@ export function mediaLibs() {
             const downlink = navigator.connection
                 ? navigator.connection.downlink
                 : DEFAULT_DOWNLINK;
-            const participants = Math.max(this.participants.length, 1);
+
+            const participants = Math.max(
+                Object.keys(this.participants).length,
+                1
+            );
+
+            console.log({
+                downlink,
+                participants: participants,
+            });
 
             const availableBandwidth = Math.min(
                 downlink / participants,
@@ -64,14 +73,14 @@ export function mediaLibs() {
 
             for (let setting of settings) {
                 if (availableBandwidth < setting.limit) {
-                    return (this.constraints = {
+                    this.constraints = {
                         video: setting.video,
                         audio: setting.audio,
-                    });
+                    };
                 }
             }
-            console.log('Available bandwidth:', availableBandwidth);
-            console.log("UPDATE constraints : ", this.constraints);
+            console.log("Available bandwidth:", availableBandwidth);
+            console.log("UPDATE constraints : ", JSON.parse(JSON.stringify(this.constraints)));
         },
 
         async updateConstraints2() {
