@@ -114,11 +114,13 @@ export default function wsHandler() {
 
             const { token } = await this._joinRoom();
             const api_domain = this.getApiDomain();
-            
+
             this.peers[user_uuid].stream = this.my.stream;
-            document.querySelector(
+            const elVideo = document.querySelector(
                 `.small-videos .card-participant[data-user-id="${user_uuid}"] video`
-            ).srcObject = this.my.stream;
+            )
+            elVideo.muted = true
+            elVideo.srcObject = this.my.stream;
 
             this.apiUrl = api_domain;
             const protoWs = api_domain.startsWith("https") ? "wss" : "ws";
