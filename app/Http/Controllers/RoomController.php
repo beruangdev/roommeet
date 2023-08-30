@@ -88,7 +88,7 @@ class RoomController extends Controller
             $apiOrder = $this->getNextApiOrder();
             $room_uuid = $apiOrder . explode("-", Str::uuid())[0];
             $user_name = $request->user_name;
-            $participant_uuid = $user ? $user->id : $this->getOrCreateParticipantUuidFromCookie();
+            $participant_uuid = $user ? $user->id : $this->getOrCreateParticipantUuidFromCookie($request);
 
             $room = $this->createRoom($request, $room_uuid, $participant_uuid);
 
@@ -181,7 +181,7 @@ class RoomController extends Controller
 
     private function getOrCreateParticipant(Request $request, Room $room, User | null $user, $user_name)
     {
-        $participant_uuid = $user ? $user->id : $this->getOrCreateParticipantUuidFromCookie();
+        $participant_uuid = $user ? $user->id : $this->getOrCreateParticipantUuidFromCookie($request);
         $participant = Participant::where('uuid', $participant_uuid)->where('room_id', $room->id)->orderBy('id', 'DESC')->first();
         if (!$participant) {
             $participant = new Participant();
@@ -210,7 +210,7 @@ class RoomController extends Controller
 
 
 
-    private function getOrCreateParticipantUuidFromCookie()
+    private function getOrCreateParticipantUuidFromCookie(Request $request)
     {
         $cookieName = "uuid";
         $cookieLifetime = 5 * 365 * 24 * 60 * 60; // 5 years in seconds
@@ -218,7 +218,7 @@ class RoomController extends Controller
         if (!$uuid) {
             $uuid = Str::uuid();
             $encryptedUuid = Crypt::encryptString($uuid);
-            setcookie($cookieName, $encryptedUuid, time() + $cookieLifetime, "/", null, false, true);
+            setcookie($cookieName, $encryptedUuid, time() + $cookieLifetime, "/", $request->host(), false, true);
         }
         return $uuid;
     }
