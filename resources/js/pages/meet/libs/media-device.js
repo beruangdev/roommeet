@@ -44,7 +44,7 @@ export function mediaLibs() {
                     video: {
                         quality: "high",
                         frameRate: 20,
-                        resolution: { width: 640, height: 480 },
+                        resolution: { width: 240, height: 240 },
                         bitrate: 700,
                     },
                     audio: { quality: "high", bitrate: 128 },
@@ -52,7 +52,7 @@ export function mediaLibs() {
                 {
                     limit: 5,
                     video: {
-                        quality: "medium",
+                        quality: "high",
                         frameRate: 24,
                         resolution: { width: 640, height: 480 },
                         bitrate: 700,
