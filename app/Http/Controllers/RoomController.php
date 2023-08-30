@@ -130,7 +130,7 @@ class RoomController extends Controller
 
             $participant = $this->getOrCreateParticipant($request, $room, $user, $user_name);
             [$api_domain, $response] = $this->callJoinApi($room, $participant);
-            dd(compact("api_domain", "response"));
+            // dd(compact("api_domain", "response"));
             $token = $response["token"];
 
             DB::commit();

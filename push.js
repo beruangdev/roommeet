@@ -14,7 +14,14 @@ if (option === "-m") {
     console.log("[2] Penggunaan: node command.js push -m <PESAN>");
 }
 
-const command = `pnpm build && git add . && git commit -m "${message}" && git push`;
+const commands = [
+    // "pnpm build",
+    "git add .",
+    `git commit -m "${message}"`,
+    "git push",
+]
+
+const command = commands.join(" && ");
 exec(command, (error, stdout, stderr) => {
     if (error) {
         console.error(`exec error: ${error}`);
