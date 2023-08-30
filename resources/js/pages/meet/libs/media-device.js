@@ -80,7 +80,10 @@ export function mediaLibs() {
                 }
             }
             console.log("Available bandwidth:", availableBandwidth);
-            console.log("UPDATE constraints : ", JSON.parse(JSON.stringify(this.constraints)));
+            console.log(
+                "UPDATE constraints : ",
+                JSON.parse(JSON.stringify(this.constraints))
+            );
         },
 
         async updateConstraints2() {
@@ -181,25 +184,23 @@ export function mediaDevices() {
 
         async shareScreen() {
             try {
-                const stream = await navigator.mediaDevices.getDisplayMedia(
-                    this.constraints
-                );
-                this.replaceStream(stream);
+                const screenStream =
+                    await navigator.mediaDevices.getDisplayMedia(
+                        this.constraints
+                    );
+
+                this.my.screenStream = screenStream;
+                this.replaceStream(screenStream);
+                this.my.onShareScreen = true;
             } catch (error) {
                 console.error("Gagal berbagi layar:", error);
-                throw error;
             }
         },
 
-        stopShareScreen() {
-            if (this.my.stream) {
-                this.my.stream.getVideoTracks().forEach((track) => {
-                    if (track.label.includes("screen")) {
-                        this.my.stream.removeTrack(track);
-                        track.stop();
-                    }
-                });
-            }
+        async stopShareScreen() {
+            await this.toggleMedia("Video", this.my.video_enabled);
+            await this.toggleMedia("Audio", this.my.audio_enabled);
+            this.my.onShareScreen = false;
         },
 
         async handleConnectionChange() {
@@ -220,7 +221,7 @@ export function mediaDevices() {
 
         async selectCamera(deviceId) {
             if (!this.isValidCameraDevice(deviceId)) {
-                throw new Error("Device ID kamera tidak valid");
+                console.error(`Device ID kamera tidak valid : ${deviceId}`);
             }
             this.my.cameraDeviceId = deviceId;
             await this.updateConstraints();
@@ -229,7 +230,7 @@ export function mediaDevices() {
         },
         async selectMicrophone(deviceId) {
             if (!this.isValidMicDevice(deviceId)) {
-                throw new Error("Device ID mikrofon tidak valid");
+                console.error(`Device ID mikrofon tidak valid : ${deviceId}`);
             }
             this.my.microphoneDeviceId = deviceId;
             await this.updateConstraints();
@@ -276,8 +277,8 @@ export function mediaDevices() {
                     this.my.stream = await this.getStream();
                 }
 
-                await this.toggleMedia("Video", this.room.video_enabled);
-                await this.toggleMedia("Audio", this.room.audio_enabled);
+                await this.toggleMedia("Video", this.my.video_enabled);
+                await this.toggleMedia("Audio", this.my.audio_enabled);
 
                 if (withCamerasAndMics) {
                     const devices =
@@ -303,8 +304,7 @@ export function mediaDevices() {
                     }
                 }
             } catch (error) {
-                console.error("Ada kesalahan:", error);
-                throw error;
+                console.error("Ada kesalahan di getMediaDevices() : ", error);
             }
         },
         async getStream() {
@@ -313,9 +313,7 @@ export function mediaDevices() {
                     !navigator.mediaDevices ||
                     !navigator.mediaDevices.getUserMedia
                 ) {
-                    throw new Error(
-                        "Perangkat media tidak didukung di browser ini"
-                    );
+                    console.error("Perangkat media tidak didukung");
                 }
                 const stream = await navigator.mediaDevices.getUserMedia(
                     this.constraints
@@ -324,7 +322,6 @@ export function mediaDevices() {
                 return stream;
             } catch (error) {
                 console.error("Gagal mengambil stream:", error);
-                throw error;
             }
         },
         async replaceStream(newStream) {

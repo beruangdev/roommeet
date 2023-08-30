@@ -62,13 +62,27 @@
                 <x-heroicon-s-chat-bubble-left class="w-6" />
                 <div class="mt-1 w-max">Chat</div>
             </button>
-            <button
-                class="flex basis-[13%] flex-col items-center justify-end rounded-lg px-3 pb-0.5 hover:bg-background-50/50 dark:hover:bg-background-925"
-                type="button"
-            >
-                <x-fluentui-share-screen-start-20 class="h-10 w-10 text-green-600" />
-                <div class="w-max">Share Screen</div>
-            </button>
+            <template x-if="!my.onShareScreen">
+                <button
+                    class="flex basis-[13%] flex-col items-center justify-end rounded-lg px-3 pb-0.5 hover:bg-background-50/50 dark:hover:bg-background-925"
+                    type="button"
+                    @click="shareScreen"
+                >
+                    <x-fluentui-share-screen-start-20 class="h-10 w-10 text-green-600" />
+                    <div class="w-max">Share Screen</div>
+                </button>
+            </template>
+            <template x-if="my.onShareScreen">
+                <button
+                    class="flex basis-[13%] flex-col items-center justify-end rounded-lg px-3 pb-0.5 hover:bg-background-50/50 dark:hover:bg-background-925"
+                    type="button"
+                    @click="stopShareScreen"
+                >
+                    <x-fluentui-share-screen-start-20 class="h-10 w-10 text-green-600" />
+                    <div class="w-max">Stop Screen</div>
+                </button>
+            </template>
+
             <button
                 class="flex basis-[11%] flex-col items-center justify-end rounded-lg px-2 pb-0.5 pt-1.5 hover:bg-background-50/50 dark:hover:bg-background-925 md:px-5"
                 type="button"

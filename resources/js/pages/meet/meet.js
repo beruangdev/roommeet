@@ -6,13 +6,15 @@ document.addEventListener("alpine:init", () => {
     Alpine.data("alpineMeet", () => ({
         room,
         my: {
-            video_enabled: true,
-            audio_enabled: true,
+            video_enabled: room.video_enabled,
+            audio_enabled: room.audio_enabled,
             cameraDeviceId: undefined,
             microphoneDeviceId: undefined,
             cameras: [],
             mics: [],
             stream: undefined,
+            screenStream: undefined,
+            onShareScreen: false,
             ...participant,
         },
         config: {
