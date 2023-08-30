@@ -56,7 +56,7 @@ export function mediaLibs() {
                 {
                     limit: 2,
                     video: {
-                        quality: "medium",
+                        quality: "low",
                         frameRate: 20,
                         resolution: { width: 320, height: 320 },
                         bitrate: 700,
@@ -130,6 +130,8 @@ export function mediaLibs() {
                     this.constraints = {
                         video: setting.video,
                         audio: {
+                            latency: 0,
+                            channelCount: { ideal: 1 },
                             quality: "high",
                             bitrate: 128,
                             echoCancellation: true,
