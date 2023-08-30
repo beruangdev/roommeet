@@ -14,7 +14,29 @@ export function mediaLibs() {
             await this.mediaDevicesInit();
         },
         constraints: {},
-        async updateConstraints() {
+
+        updateConstraints() {
+            const MAX_BANDWIDTH = 12;
+            const DEFAULT_DOWNLINK = 10;
+            const downlink = navigator.connection ? navigator.connection.downlink : DEFAULT_DOWNLINK;
+            const participants = Math.max(this.participants.length, 1);
+        
+            const availableBandwidth = Math.min(downlink / participants, MAX_BANDWIDTH);
+        
+            const settings = [
+                { limit: 2, video: { quality: "low", frameRate: 15, resolution: { width: 320, height: 240 }, bitrate: 300 }, audio: { quality: "low", bitrate: 64 } },
+                { limit: 5, video: { quality: "medium", frameRate: 30, resolution: { width: 640, height: 480 }, bitrate: 700 }, audio: { quality: "medium", bitrate: 96 } },
+                { limit: Infinity, video: { quality: "high", frameRate: 60, resolution: { width: 1280, height: 720 }, bitrate: 2500 }, audio: { quality: "high", bitrate: 128 } }
+            ];
+        
+            for (let setting of settings) {
+                if (availableBandwidth < setting.limit) {
+                    return (this.constraints = { video: setting.video, audio: setting.audio });
+                }
+            }
+        },
+        
+        async updateConstraints2() {
             const videoConfigurations = [
                 // { min: 2, width: 1920, height: 1080, frameRate: 30 },
                 // { min: 1.5, width: 1280, height: 720, frameRate: 30 },
