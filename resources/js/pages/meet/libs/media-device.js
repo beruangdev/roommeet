@@ -31,7 +31,7 @@ export function mediaLibs() {
             const settings = [
                 // { limit: 2, video: { quality: "low", frameRate: 15, resolution: { width: 320, height: 240 }, bitrate: 300 }, audio: { quality: "low", bitrate: 64 } },
                 {
-                    limit: 5,
+                    limit: 2,
                     video: {
                         quality: "low",
                         frameRate: 20,
