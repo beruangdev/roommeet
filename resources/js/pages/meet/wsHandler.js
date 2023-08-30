@@ -147,6 +147,13 @@ export default function wsHandler() {
                 }
 
                 if (type === "opening") {
+                    this.participants[user_uuid].video_enabled = data.my.video_enabled;
+                    this.participants[user_uuid].audio_enabled = data.my.audio_enabled;
+                    this.participants[user_uuid].approved = data.my.approved;
+                    this.participants[user_uuid].name = data.my.name;
+                    this.participants[user_uuid].status = data.my.status;
+                    this.participants[user_uuid].is_creator = data.my.is_creator;
+
                     Object.keys(data).forEach((key) => {
                         if (
                             [
@@ -155,9 +162,7 @@ export default function wsHandler() {
                                 "audio_enabled",
                                 "lobby_enabled",
                                 "password",
-                                "trackParticipantTimeline_enabled",
-                                "trackParticipantFaceTimeline_enabled",
-                                "trackParticipantCamTimeline_enabled",
+                                "my",
                             ].includes(key)
                         ) {
                             this[key] = data[key];
@@ -168,9 +173,9 @@ export default function wsHandler() {
                     this.addPeer(data, true);
                 } else if (type === "initReceive") {
                     // partiscipant yang bukan initiator bersiap untuk menerima
-                    if (this.my.uuid === this.creator) {
-                        await this.addPeer(this.my, false);
-                    }
+                    // if (this.my.uuid === this.creator) {
+                    //     await this.addPeer(this.my, false);
+                    // }
                     await this.addPeer(data, false);
                     this.ws.send(
                         JSON.stringify({

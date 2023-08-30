@@ -96,24 +96,33 @@ export function wsLibs() {
             });
         },
         async addPeer(data, am_initiator) {
-            const { user_uuid, name, approved, creator } = data;
+            const { user_uuid, name } = data;
             console.log("🚀 ~ file: ws.js:99 ~ addPeer ~ data:", data);
 
             const configuration = {
                 iceServers: this.iceServers,
             };
+            this.my.video_enabled = data.video_enabled;
+            this.my.audio_enabled = data.audio_enabled;
+            this.my.approved = data.approved;
+            this.my.name = data.name;
+            this.my.status = data.status;
+            this.my.is_creator = data.is_creator;
+
+ 
+            
             if (!this.participants[user_uuid]) {
                 this.addParticipant(user_uuid, {
                     uuid: user_uuid,
                     name,
-                    approved: Boolean(
-                        !room.lobby_enabled || room.creator_uuid === user_uuid
-                    ),
+                    approved: this.my.approved,
                     creator: Boolean(room.creator_uuid === user_uuid),
-                    video_enabled: room.video_enabled,
-                    audio_enabled: room.audio_enabled,
+                    video_enabled: this.my.video_enabled,
+                    audio_enabled: this.my.audio_enabled,
                     pinned: false,
                     lastSoundTimestamp: null,
+                    status: this.my.status,
+                    is_creator: this.my.is_creator,
                 });
 
                 this.peers[user_uuid] = {
@@ -121,6 +130,13 @@ export function wsLibs() {
                     peer: null,
                 };
             }
+
+            this.participants[user_uuid].video_enabled = data.video_enabled;
+            this.participants[user_uuid].audio_enabled = data.audio_enabled;
+            this.participants[user_uuid].approved = data.approved;
+            this.participants[user_uuid].name = data.name;
+            this.participants[user_uuid].status = data.status;
+            this.participants[user_uuid].is_creator = data.is_creator;
 
             this.participants[user_uuid].peer = new SimplePeer({
                 initiator: am_initiator,

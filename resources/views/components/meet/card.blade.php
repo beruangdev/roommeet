@@ -3,7 +3,7 @@
     :data-user-id="participant.uuid"
     :data-order="participant.order"
 >
-    <div class="participant__video-audio">
+    <div class="participant__video-audio z-10">
         <div>
             <x-heroicon-m-video-camera
                 class="enabled"
@@ -26,7 +26,7 @@
         </div>
     </div>
     <div
-        class="participant__name"
+        class="participant__name z-10"
         x-text="participant.name"
     ></div>
 

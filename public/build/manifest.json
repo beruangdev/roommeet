@@ -11,7 +11,7 @@
     "src": "resources/js/app.js"
   },
   "resources/js/pages/meet/meet.js": {
-    "file": "assets/meet-58c88096.js",
+    "file": "assets/meet-64ff7051.js",
     "imports": [
       "_array-998e8c2c.js"
     ],
@@ -19,7 +19,7 @@
     "src": "resources/js/pages/meet/meet.js"
   },
   "resources/scss/app.scss": {
-    "file": "assets/app-664ca28d.css",
+    "file": "assets/app-ba474d21.css",
     "isEntry": true,
     "src": "resources/scss/app.scss"
   }
