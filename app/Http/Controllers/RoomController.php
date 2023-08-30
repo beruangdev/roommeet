@@ -7,6 +7,7 @@ use App\Http\Requests\StoreRoomRequest;
 use App\Http\Requests\UpdateRoomRequest;
 use App\Models\Participant;
 use App\Models\User;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
@@ -211,12 +212,27 @@ class RoomController extends Controller
 
     private function getOrCreateParticipantUuidFromCookie()
     {
-        $uuid = isset($_COOKIE["uuid"]) ? $_COOKIE["uuid"] : null;
+        $cookieName = "uuid";
+        $cookieLifetime = 5 * 365 * 24 * 60 * 60; // 5 years in seconds
+        $uuid = $this->getDecryptedUuidFromCookie($cookieName);
         if (!$uuid) {
             $uuid = Str::uuid();
-            setcookie("uuid", Crypt::encryptString($uuid), time() + (5 * 365 * 24 * 60 * 60), "/", null, false, true);
+            $encryptedUuid = Crypt::encryptString($uuid);
+            setcookie($cookieName, $encryptedUuid, time() + $cookieLifetime, "/", null, false, true);
         }
-        return Crypt::decryptString($uuid);
+        return $uuid;
+    }
+
+    private function getDecryptedUuidFromCookie($cookieName)
+    {
+        if (!isset($_COOKIE[$cookieName])) {
+            return null;
+        }
+        try {
+            return Crypt::decryptString($_COOKIE[$cookieName]);
+        } catch (DecryptException $e) {
+            return null;
+        }
     }
 
 
