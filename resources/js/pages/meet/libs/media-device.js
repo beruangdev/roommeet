@@ -16,10 +16,10 @@ export function mediaLibs() {
         constraints: {},
         async updateConstraints() {
             const videoConfigurations = [
-                { min: 2, width: 1920, height: 1080, frameRate: 30 },
-                { min: 1.5, width: 1280, height: 720, frameRate: 30 },
-                { min: 1, width: 640, height: 360, frameRate: 24 },
-                { min: 0.5, width: 640, height: 360, frameRate: 20 },
+                // { min: 2, width: 1920, height: 1080, frameRate: 30 },
+                // { min: 1.5, width: 1280, height: 720, frameRate: 30 },
+                // { min: 1, width: 640, height: 360, frameRate: 26 },
+                { min: 0.5, width: 640, height: 360, frameRate: 24 },
                 { min: 0.2, width: 480, height: 270, frameRate: 20 },
                 { min: 0, width: 320, height: 180, frameRate: 15 },
             ];
