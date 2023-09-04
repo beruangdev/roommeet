@@ -199,9 +199,10 @@ export function mediaDevices() {
         async shareScreen() {
             try {
                 const screenStream =
-                    await navigator.mediaDevices.getDisplayMedia(
-                        this.constraints
-                    );
+                    await navigator.mediaDevices.getDisplayMedia({
+                        video: true,
+                        audio: true,
+                    });
 
                 this.my.screenStream = screenStream;
                 this.replaceStream(screenStream);
