@@ -4,7 +4,7 @@ export default function controllerHandler() {
     return {
         _forceHideController: false,
         showControllers: true,
-        autoHideControllerEnabled: !true,
+        autoHideControllerEnabled: true,
         timeout: undefined,
         showSmallParticipants: false,
         showParticipantLists: false,
