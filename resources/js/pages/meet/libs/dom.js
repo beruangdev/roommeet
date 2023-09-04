@@ -32,8 +32,8 @@ export default function dom() {
             this.resetResizeCardsStyle();
             if (this.viewType === "1:1") {
                 this.resize1by1();
-            } else if (this.viewType === "speaker") {
-                this.resizeSpeaker();
+            } else if (this.viewType === "speakers") {
+                this.resizeSpeakers();
             } else if (this.viewType === "gallery") {
                 this.resizeGallery();
             }
@@ -49,7 +49,7 @@ export default function dom() {
                 window.innerHeight - _small.clientHeight
             }px`;
         },
-        resizeSpeaker() {
+        resizeSpeakers() {
             this._resizeGalleryCards(_bigCards);
         },
         resizeGallery() {

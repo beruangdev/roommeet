@@ -38,10 +38,10 @@
                     <li>
                         <button
                             class="flex w-full items-center justify-between px-4 py-2 hover:bg-background-100 dark:hover:bg-background-950/40"
-                            :class="viewType === 'speaker' ? 'text-blue-800 dark:text-blue-300' : 'dark:hover:text-white'"
+                            :class="viewType === 'speakers' ? 'text-blue-800 dark:text-blue-300' : 'dark:hover:text-white'"
                             type="button"
-                            @click="setViewType('speaker')"
-                        >Speaker <span><x-gmdi-movie
+                            @click="setViewType('speakers')"
+                        >Speakers <span><x-gmdi-movie
                                     class="w-5"
                                     viewBox="0 0 24 24"
                                 /></span></button>
@@ -70,7 +70,7 @@
         </div>
     </div>
 
-    <template x-if="['speaker'].includes(viewType)">
+    <template x-if="['speakers'].includes(viewType)">
         <button
             class="aspect-square w-8 rounded-md bg-background-50 p-1.5 duration-200 hover:bg-white hover:shadow-lg dark:bg-white/5 hover:dark:bg-white/10 md:hidden"
             @click="toggleSmallParticipants(!showSmallParticipants)"

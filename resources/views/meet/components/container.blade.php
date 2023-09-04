@@ -2,12 +2,21 @@
     <div class="big-videos">
         <div class="gallery">
             <div class="wrapper-videos">
-                <template
-                    x-for="(participant, index) in obj_to_array(participants).slice(0, 4)"
-                    :key="participant.uuid"
-                >
-                    <x-meet.card />
-                </template>
+                @for ($index = 0; $index < 10; $index++)
+                    <div
+                        class="card-participant aspect-square md:aspect-video"
+                        index="{{ $index }}"
+                        style="display:none;"
+                    >
+                        <div class="participant__name z-10"></div>
+                        <div class="video-container flex h-full w-full justify-center">
+                            <video
+                                class="h-full w-full"
+                                autoplay
+                            ></video>
+                        </div>
+                    </div>
+                @endfor
             </div>
         </div>
     </div>
@@ -29,7 +38,7 @@
         <div class="gallery">
             <div class="wrapper-videos">
                 <template
-                    x-for="(participant, index) in obj_to_array(participants)"
+                    x-for="(participant, index) in participants"
                     :key="participant.uuid"
                 >
                     <x-meet.card></x-meet.card>

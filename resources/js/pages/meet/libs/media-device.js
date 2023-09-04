@@ -13,7 +13,25 @@ export function mediaLibs() {
             await this.getMediaDevices(true);
             await this.mediaDevicesInit();
         },
-        constraints: {},
+        constraints: {
+            video: {
+                quality: "minimal",
+                frameRate: 5,
+                resolution: { width: 90, height: 90 },
+                bitrate: 80,
+            },
+            audio: {
+                latency: 0,
+                channelCount: { ideal: 1 },
+                quality: "high",
+                bitrate: 128,
+                echoCancellation: true,
+                noiseSuppression: true,
+                autoGainControl: true,
+                sampleRate: { ideal: 48000 },
+                sampleSize: { ideal: 24 },
+            },
+        },
 
         updateConstraints() {
             const MAX_BANDWIDTH = 1 * 8;
@@ -36,209 +54,122 @@ export function mediaLibs() {
                 {
                     limit: 1000,
                     video: {
-                        quality: "high",
-                        frameRate: 30,
-                        resolution: { width: 1280, height: 720 },
-                        bitrate: 2500,
-                        // aspectRatio: 1 / 1,
+                        frameRate: { ideal: 30, min: 25, max: 60 },
+                        resolution: {
+                            width: { ideal: 1280, min: 1024, max: 1920 },
+                            height: { ideal: 720, min: 600, max: 1080 },
+                        },
+                        bitrate: { ideal: 2500, min: 2000, max: 3000 },
                     },
-                    audio: { quality: "high", bitrate: 128 },
                 },
                 {
                     limit: 5,
                     video: {
-                        quality: "high",
-                        frameRate: 24,
-                        resolution: { width: 640, height: 480 },
-                        bitrate: 700,
-                        // aspectRatio: 1 / 1,
+                        frameRate: { ideal: 24, min: 20, max: 30 },
+                        resolution: {
+                            width: { ideal: 640, min: 480, max: 800 },
+                            height: { ideal: 480, min: 360, max: 600 },
+                        },
+                        bitrate: { ideal: 700, min: 500, max: 1000 },
                     },
-                    audio: { quality: "high", bitrate: 128 },
                 },
                 {
                     limit: 2,
                     video: {
-                        quality: "low",
-                        frameRate: 20,
-                        resolution: { width: 320, height: 320 },
-                        bitrate: 700,
-                        // aspectRatio: 1 / 1,
+                        frameRate: { ideal: 20, min: 15, max: 25 },
+                        resolution: {
+                            width: { ideal: 320, min: 240, max: 480 },
+                            height: { ideal: 320, min: 240, max: 480 },
+                        },
+                        bitrate: { ideal: 700, min: 500, max: 900 },
                     },
-                    audio: { quality: "high", bitrate: 128 },
                 },
                 {
                     limit: 1.5,
                     video: {
-                        quality: "low",
-                        frameRate: 15,
-                        resolution: { width: 240, height: 240 },
-                        bitrate: 500,
-                        // aspectRatio: 1 / 1,
+                        frameRate: { ideal: 15, min: 10, max: 20 },
+                        resolution: {
+                            width: { ideal: 240, min: 180, max: 360 },
+                            height: { ideal: 240, min: 180, max: 360 },
+                        },
+                        bitrate: { ideal: 500, min: 300, max: 700 },
                     },
-                    audio: { quality: "medium", bitrate: 64 },
                 },
                 {
                     limit: 1,
                     video: {
-                        quality: "low",
-                        frameRate: 15,
-                        resolution: { width: 240, height: 240 },
-                        bitrate: 400,
-                        // aspectRatio: 1 / 1,
+                        frameRate: { ideal: 15, min: 10, max: 20 },
+                        resolution: {
+                            width: { ideal: 240, min: 180, max: 360 },
+                            height: { ideal: 240, min: 180, max: 360 },
+                        },
+                        bitrate: { ideal: 400, min: 200, max: 600 },
                     },
-                    audio: { quality: "low", bitrate: 48 },
                 },
                 {
                     limit: 0.75,
                     video: {
-                        quality: "veryLow",
-                        frameRate: 10,
-                        resolution: { width: 180, height: 180 },
-                        bitrate: 300,
-                        // aspectRatio: 1 / 1,
+                        frameRate: { ideal: 15, min: 10, max: 20 },
+                        resolution: {
+                            width: { ideal: 180, min: 160, max: 240 },
+                            height: { ideal: 180, min: 160, max: 240 },
+                        },
+                        bitrate: { ideal: 300, min: 200, max: 400 },
                     },
-                    audio: { quality: "low", bitrate: 36 },
                 },
                 {
                     limit: 0.5,
                     video: {
-                        quality: "veryLow",
-                        frameRate: 10,
-                        resolution: { width: 160, height: 160 },
-                        bitrate: 200,
-                        // aspectRatio: 1 / 1,
+                        frameRate: { ideal: 15, min: 10, max: 20 },
+                        resolution: {
+                            width: { ideal: 160, min: 120, max: 240 },
+                            height: { ideal: 160, min: 120, max: 240 },
+                        },
+                        bitrate: { ideal: 200, min: 100, max: 300 },
                     },
-                    audio: { quality: "veryLow", bitrate: 32 },
                 },
                 {
                     limit: 0.3,
                     video: {
-                        quality: "minimal",
-                        frameRate: 7,
-                        resolution: { width: 120, height: 120 },
-                        bitrate: 100,
-                        // aspectRatio: 1 / 1,
+                        frameRate: { ideal: 15, min: 10, max: 20 },
+                        resolution: {
+                            width: { ideal: 120, min: 90, max: 180 },
+                            height: { ideal: 120, min: 90, max: 180 },
+                        },
+                        bitrate: { ideal: 100, min: 80, max: 200 },
                     },
-                    audio: { quality: "veryLow", bitrate: 24 },
                 },
                 {
                     limit: 0.2,
                     video: {
-                        quality: "minimal",
-                        frameRate: 5,
-                        resolution: { width: 90, height: 90 },
-                        bitrate: 80,
-                        // aspectRatio: 1 / 1,
+                        frameRate: { ideal: 15, min: 10, max: 20 },
+                        resolution: {
+                            width: { ideal: 90, min: 60, max: 120 },
+                            height: { ideal: 90, min: 60, max: 120 },
+                        },
+                        bitrate: { ideal: 80, min: 50, max: 100 },
                     },
-                    audio: { quality: "minimal", bitrate: 16 },
                 },
             ];
 
             for (let setting of settings) {
                 if (availableBandwidth < setting.limit) {
                     this.constraints = {
-                        video: setting.video,
-                        audio: {
-                            latency: 0,
-                            channelCount: { ideal: 1 },
-                            quality: "high",
-                            bitrate: 128,
-                            echoCancellation: true,
-                            noiseSuppression: true,
-                            autoGainControl: true,
-                            sampleRate: { ideal: 48000 },
-                            sampleSize: { ideal: 24 },
+                        ...this.constraints,
+                        video: {
+                            ...setting.video,
+                            contentHint: "detail",
                         },
                     };
-                    break; // Keluar dari loop setelah menemukan setting yang sesuai
+                    return;
                 }
             }
 
-            // Jika tidak ada setting yang sesuai, gunakan pengaturan default
-            if (!this.constraints) {
-                this.constraints = {
-                    video: settings[settings.length - 1].video,
-                    audio: { quality: "high", bitrate: 128 },
-                };
-            }
-
-            console.log("Available bandwidth:", availableBandwidth);
-            console.log(
-                "UPDATE constraints :",
-                JSON.parse(JSON.stringify(this.constraints))
-            );
+            this.constraints = {
+                ...this.constraints,
+                video: settings[settings.length - 1].video,
+            };
         },
-
-        async updateConstraints2() {
-            const videoConfigurations = [
-                // { min: 2, width: 1920, height: 1080, frameRate: 30 },
-                // { min: 1.5, width: 1280, height: 720, frameRate: 30 },
-                // { min: 1, width: 640, height: 360, frameRate: 26 },
-                // { min: 0.5, width: 640, height: 360, frameRate: 24 },
-                // { min: 0.2, width: 480, height: 270, frameRate: 20 },
-                // { min: 0, width: 320, height: 180, frameRate: 15 },
-                { min: 0.5, width: 480, height: 270, frameRate: 24 },
-                { min: 0.2, width: 240, height: 135, frameRate: 20 },
-                { min: 0, width: 120, height: 90, frameRate: 15 },
-            ];
-
-            const downlinkMbps = navigator.connection.downlink / 8;
-
-            if (this.my.video_enabled) {
-                for (let config of videoConfigurations) {
-                    if (downlinkMbps >= config.min) {
-                        this.constraints.video = {
-                            width: { ideal: config.width, max: config.width },
-                            height: {
-                                ideal: config.height,
-                                max: config.height,
-                            },
-                            frameRate: {
-                                ideal: config.frameRate,
-                                max: config.frameRate,
-                            },
-                        };
-                        break;
-                    }
-                }
-                if (this.my.cameraDeviceId) {
-                    this.constraints.video.deviceId = {
-                        exact: this.my.cameraDeviceId,
-                    };
-                }
-            } else {
-                this.constraints.video = false;
-            }
-
-            if (this.my.audio_enabled) {
-                this.constraints.audio = {
-                    echoCancellation: true,
-                    noiseSuppression: true,
-                    autoGainControl: true,
-                    sampleRate: { ideal: 48000 },
-                    sampleSize: { ideal: 24 },
-                };
-
-                if (downlinkMbps < 0.5) {
-                    this.constraints.audio.sampleRate = { ideal: 32000 };
-                } else if (downlinkMbps < 0.2) {
-                    // this.constraints.audio.echoCancellation = false;
-                    this.constraints.audio.sampleRate = { ideal: 16000 };
-                    this.constraints.audio.sampleSize = { ideal: 16 };
-                }
-
-                if (this.my.microphoneDeviceId) {
-                    this.constraints.audio.deviceId = {
-                        exact: this.my.microphoneDeviceId,
-                    };
-                }
-            } else {
-                this.constraints.audio = false;
-            }
-
-            console.log("UPDATE constraints : ", this.constraints);
-        },
-
         async generateIceServers() {
             this.iceServers = await getIceServers();
         },
@@ -322,8 +253,10 @@ export function mediaDevices() {
         },
 
         toggleVideo() {
-            // action tombol toggle video
             this.my.video_enabled = !this.my.video_enabled;
+            this.updateVideo();
+        },
+        updateVideo() {
             this.participants[user_uuid].video_enabled = this.my.video_enabled;
             this.toggleMedia("Video", this.my.video_enabled);
 
@@ -338,8 +271,10 @@ export function mediaDevices() {
             );
         },
         toggleAudio() {
-            // action tombol toggle audio
             this.my.audio_enabled = !this.my.audio_enabled;
+            this.updateAudio();
+        },
+        updateAudio() {
             this.participants[user_uuid].audio_enabled = this.my.audio_enabled;
             this.toggleMedia("Audio", this.my.audio_enabled);
 
@@ -397,11 +332,86 @@ export function mediaDevices() {
                     !navigator.mediaDevices.getUserMedia
                 ) {
                     console.error("Perangkat media tidak didukung");
+                    return;
                 }
+
+                if (this.my.stream) {
+                    const propertiesExist = [
+                        "audioSource",
+                        "audioAnalyser",
+                        "audioContext",
+                    ].every((prop) => this.my[prop] && this.my[prop]);
+                    console.log("propertiesExist", propertiesExist);
+                    if (propertiesExist) {
+                        try {
+                            this.my.audioSource.disconnect(
+                                this.my.audioAnalyser
+                            );
+                        } catch (error) {
+                            console.warn(
+                                "Tidak bisa memutuskan audioSource sambungan dari audioAnalyser:",
+                                error
+                            );
+                        }
+
+                        try {
+                            this.my.audioAnalyser.disconnect(
+                                this.my.audioContext.destination
+                            );
+                        } catch (error) {
+                            console.warn(
+                                "Tidak bisa memutuskan sambungan audioAnalyser dari audioContext:",
+                                error
+                            );
+                        }
+
+                        try {
+                            this.my.audioContext.close();
+                        } catch (error) {}
+                    }
+
+                    const tracks = this.my.stream.getTracks();
+                    for (let index = 0; index < tracks.length; index++) {
+                        tracks[index].stop();
+                    }
+                }
+
                 const stream = await navigator.mediaDevices.getUserMedia(
                     this.constraints
                 );
-                // console.log("Received stream tracks:", stream.getTracks());
+
+                this.my.audioContext = new AudioContext();
+                this.my.audioSource =
+                    this.my.audioContext.createMediaStreamSource(stream);
+                this.my.audioAnalyser = this.my.audioContext.createAnalyser();
+                this.my.audioAnalyser.fftSize = 256; // Anda dapat menyesuaikan ini sesuai kebutuhan
+
+                const bufferLength = this.my.audioAnalyser.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+
+                this.my.audioSource.connect(this.my.audioAnalyser);
+
+                const checkForAudio = async () => {
+                    this.my.audioAnalyser.getByteFrequencyData(dataArray);
+                    this.my.audioAmplitudeAverage =
+                        dataArray.reduce((a, b) => a + b) / bufferLength;
+                    this.my.audioAplitudePercentage =
+                        (this.my.audioAmplitudeAverage / 255) * 100;
+
+                    if (this.my.audioAmplitudeAverage > 5) {
+                        this.my.lastTimeAudioWasHeard = Date.now();
+                    }
+
+                    // TODO: kirim kapan terakhir kali audio terdengar ke semua participant agar participant yang lain dapat sort data
+                    if (this.checkAudioTimeout)
+                        clearTimeout(this.checkAudioTimeout);
+                    this.checkAudioTimeout = setTimeout(() => {
+                        checkForAudio();
+                    }, 50);
+                };
+
+                checkForAudio();
+
                 return stream;
             } catch (error) {
                 console.error("Gagal mengambil stream:", error);
@@ -412,10 +422,10 @@ export function mediaDevices() {
                 ["Video", "Audio"].forEach((mediaType) => {
                     const oldTracks = this.my.stream[`get${mediaType}Tracks`]();
                     const newTracks = newStream[`get${mediaType}Tracks`]();
-                    oldTracks.forEach((track) => {
-                        this.my.stream.removeTrack(track);
-                        track.stop();
-                    });
+                    for (let index = 0; index < oldTracks.length; index++) {
+                        this.my.stream.removeTrack(oldTracks[index]);
+                        oldTracks[index].stop();
+                    }
 
                     if (newTracks.length > 0) {
                         this.my.stream.addTrack(newTracks[0]);
@@ -431,26 +441,27 @@ export function mediaDevices() {
                 if (participant.peer) {
                     const senders = participant.peer._pc.getSenders();
                     const tracks = newStream.getTracks();
-                    tracks.forEach((track) => {
+
+                    for (let index = 0; index < tracks.length; index++) {
+                        const track = tracks[index];
                         let sender = senders.find(
                             (s) => s.track && s.track.kind === track.kind
                         );
-                        if (sender) sender.replaceTrack(track);
-                        else if (
+                        if (sender) {
+                            sender.replaceTrack(track);
+                        } else if (
                             !senders.some(
                                 (s) => s.track && s.track.id === track.id
-                            )
+                            ) &&
+                            this.my.stream
                         ) {
-                            participant.peer._pc.addTrack(
-                                track,
-                                this.my.stream
-                            );
+                            participant.peer.addTrack(track, this.my.stream);
                         } else {
                             console.error(
                                 `Sender sudah ada untuk track ${track.id}`
                             );
                         }
-                    });
+                    }
                 }
             }
         },
@@ -460,10 +471,11 @@ export function mediaDevices() {
                 const newStream = await this.getStream();
                 this.replaceStream(newStream);
             } else if (this.my.stream) {
-                this.my.stream[`get${mediaType}Tracks`]().forEach((track) => {
-                    track.stop();
-                    this.my.stream.removeTrack(track);
-                });
+                const tracks = this.my.stream[`get${mediaType}Tracks`]();
+                for (let i = 0; i < tracks.length; i++) {
+                    tracks[i].stop();
+                    this.my.stream.removeTrack(tracks[i]);
+                }
             }
         },
     };

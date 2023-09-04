@@ -18,6 +18,8 @@
         @include('meet.components.top-right')
         @include('meet.components.container')
         @include('meet.components.controller')
+        @include('meet.components.chat')
+        @include('meet.components.participant-lists')
     </div>
 
     <script

@@ -4,10 +4,10 @@ import "./dark-mode";
 import "./helpers/array";
 
 import Alpine from 'alpinejs';
-import focus from '@alpinejs/focus';
+import Focus from '@alpinejs/focus';
 window.Alpine = Alpine;
 
-Alpine.plugin(focus);
+Alpine.plugin(Focus);
 
 document.addEventListener("DOMContentLoaded", () => {
   Alpine.start();

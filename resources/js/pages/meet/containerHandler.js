@@ -1,14 +1,10 @@
-// import _1by1Handler from "./containers/1by1";
-// import speakerHandler from "./containers/speaker";
-// import galleryHandlerInit from "./containers/gallery";
 import dom from './libs/dom';
 
 export default function containerHandler() {
     return {
         viewType: undefined,
-        list: [],
         containerHandlerInit() {
-            const viewType = localStorage.getItem("viewType") || "speaker";
+            const viewType = localStorage.getItem("viewType") || "gallery";
             localStorage.setItem("viewType", viewType);
             this.setViewType(viewType);
             this.domInit();
@@ -19,8 +15,5 @@ export default function containerHandler() {
             this.resizeCards();
         },
         ...dom(),
-        // ..._1by1Handler(),
-        // ...speakerHandler(),
-        // ...galleryHandlerInit(),
     };
 }

@@ -2,6 +2,7 @@
     {{ $attributes->twMerge(['card-participant', 'aspect-square md:aspect-video']) }}
     :data-user-id="participant.uuid"
     :data-order="participant.order"
+    @click="cardClickHandler(participant)"
 >
     <div class="participant__video-audio z-10">
         <div>

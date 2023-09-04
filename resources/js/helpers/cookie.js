@@ -1,12 +1,13 @@
-export function setCookie(name, value, days) {
+export function setCookie(name, value, minutes) {
     var expires = "";
-    if (days) {
+    if (minutes) {
         var date = new Date();
-        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+        date.setTime(date.getTime() + minutes * 60 * 1000); // Ubah ke menit
         expires = "; expires=" + date.toUTCString();
     }
     document.cookie = name + "=" + value + expires + "; path=/";
 }
+
 
 export function getCookie(name) {
     var nameEQ = name + "=";
@@ -23,7 +24,6 @@ export function getCookie(name) {
     return null;
 }
 
-// Function to remove cookie
 export function removeCookie(name) {
     document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 }

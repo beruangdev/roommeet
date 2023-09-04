@@ -11,7 +11,7 @@
 >
     <div @click.outside="show = false">
         <button
-            class="rounded-lg p-1 bg-background-50 hover:bg-white hover:shadow-lg dark:bg-background-950/80 hover:dark:bg-background-950/100 duration-200"
+            class="rounded-lg bg-background-50 p-1 duration-200 hover:bg-white hover:shadow-lg dark:bg-background-950/80 hover:dark:bg-background-950/100"
             type="button"
             @click="show = !show"
         >
@@ -41,7 +41,7 @@
                     <table>
                         <tbody>
                             <tr>
-                                <td>Meeting ID</td>
+                                <td>🏠 Room ID</td>
                                 <td>
                                     <div class="w-4"></div>
                                 </td>
@@ -52,7 +52,7 @@
                                 <td>12312312</td>
                             </tr>
                             <tr>
-                                <td>Host</td>
+                                <td>👤 Host</td>
                                 <td>
                                     <div class="w-4"></div>
                                 </td>
@@ -63,7 +63,7 @@
                                 <td>12312312</td>
                             </tr>
                             <tr>
-                                <td>Password</td>
+                                <td>🔑 Password</td>
                                 <td>
                                     <div class="w-4"></div>
                                 </td>
@@ -72,6 +72,39 @@
                                     <div class="w-1"></div>
                                 </td>
                                 <td>12312312</td>
+                            </tr>
+                            <tr>
+                                <td>🎦 Camera size</td>
+                                <td>
+                                    <div class="w-4"></div>
+                                </td>
+                                <td>:</td>
+                                <td>
+                                    <div class="w-1"></div>
+                                </td>
+                                <td><span x-text="constraints.video.resolution.width.max"></span> x <span x-text="constraints.video.resolution.height.max"></span></td>
+                            </tr>
+                            <tr>
+                                <td>⬆️ Upload speed</td>
+                                <td>
+                                    <div class="w-4"></div>
+                                </td>
+                                <td>:</td>
+                                <td>
+                                    <div class="w-1"></div>
+                                </td>
+                                <td x-text="my.internet.upload"></td>
+                            </tr>
+                            <tr>
+                                <td>⬇️ Download speed</td>
+                                <td>
+                                    <div class="w-4"></div>
+                                </td>
+                                <td>:</td>
+                                <td>
+                                    <div class="w-1"></div>
+                                </td>
+                                <td x-text="my.internet.download"></td>
                             </tr>
                         </tbody>
                     </table>

@@ -8,15 +8,16 @@ export function wsLibs() {
         _observerResumeOrPause() {
             return new IntersectionObserver(
                 (entries) => {
-                    entries.forEach((entry) => {
-                        const participant_uuid =
+                    for (let i = 0; i < entries.length; i++) {
+                        const entry = entries[i];
+                        const sender_uuid =
                             entry.target.getAttribute("data-user-id");
                         if (entry.isIntersecting) {
-                            this.resumePeerStream(participant_uuid);
+                            this.requestResumePeerStream(sender_uuid);
                         } else {
-                            this.pausePeerStream(participant_uuid);
+                            this.requestPausePeerStream(sender_uuid);
                         }
-                    });
+                    }
                 },
                 {
                     root: null,
@@ -25,48 +26,33 @@ export function wsLibs() {
                 }
             );
         },
-        getObserverTracks(participant_uuid) {
-            return this.participants[
-                participant_uuid
-            ].peer.streams[0].getTracks();
+        getObserverTracks(sender_uuid) {
+            return this.participants[sender_uuid].peer.streams[0].getTracks();
         },
-        resumePeerStream(participant_uuid) {
-            console.log("resumePeerStream", participant_uuid);
-
-            // if (this.participants[participant_uuid].peer) {
-            //     const tracks = this.getObserverTracks(participant_uuid);
-            //     console.log("🚀 tracks:", tracks)
-            //     tracks.forEach((track) => (track.enabled = true));
-            // }
-            // TODO: ketika element video participant lain tidak terlihat di layar kita maka minta si pengirim untuk menghentikan pengiriman ke kita
+        requestResumePeerStream(sender_uuid) {
             this.ws.send(
                 JSON.stringify({
-                    type: "resumePeerStream",
+                    type: "requestResumePeerStream",
                     data: {
-                        user_uuid: participant_uuid,
+                        sender_uuid: sender_uuid,
+                        receiver_uuid: user_uuid,
                     },
                 })
             );
         },
-        pausePeerStream(participant_uuid) {
-            if (!this.participants[participant_uuid]) return false;
+        requestPausePeerStream(sender_uuid) {
+            if (!this.participants[sender_uuid]) return false;
             console.log(
-                "pausePeerStream",
+                "requestPausePeerStream",
                 this.participants[user_uuid].name,
-                this.participants[participant_uuid].name
+                this.participants[sender_uuid].name
             );
-            // if (this.participants[participant_uuid]) {
-            //     const tracks = this.getObserverTracks(participant_uuid);
-            //     console.log("🚀 tracks:", tracks)
-            //     tracks.forEach((track) => (track.enabled = false));
-            // }
-
-            // TODO: ketika element video participant lain terlihat di layar kita maka minta si pengirim untuk melanjutkan pengiriman ke kita
             this.ws.send(
                 JSON.stringify({
-                    type: "pausePeerStream",
+                    type: "requestPausePeerStream",
                     data: {
-                        user_uuid: participant_uuid,
+                        sender_uuid,
+                        receiver_uuid: user_uuid,
                     },
                 })
             );
@@ -77,66 +63,51 @@ export function wsLibs() {
                 uuid,
                 name,
                 approved,
-                creator,
                 video_enabled,
                 audio_enabled,
                 pinned,
                 lastSoundTimestamp,
+                status,
+                is_creator,
             }
         ) {
             return (this.participants[user_uuid] = {
                 uuid,
                 name,
                 approved,
-                creator,
                 video_enabled,
                 audio_enabled,
                 pinned,
                 lastSoundTimestamp,
+                status,
+                is_creator,
+                internet: {
+                    download: 0,
+                    upload: 0,
+                }
             });
         },
         async addPeer(data, am_initiator) {
             const { user_uuid, name } = data;
-            console.log("🚀 ~ file: ws.js:99 ~ addPeer ~ data:", data);
+            console.log("🚀 addPeer ~ data:", data);
 
             const configuration = {
                 iceServers: this.iceServers,
             };
-            this.my.video_enabled = data.video_enabled;
-            this.my.audio_enabled = data.audio_enabled;
-            this.my.approved = data.approved;
-            this.my.name = data.name;
-            this.my.status = data.status;
-            this.my.is_creator = data.is_creator;
 
- 
-            
             if (!this.participants[user_uuid]) {
                 this.addParticipant(user_uuid, {
                     uuid: user_uuid,
-                    name,
-                    approved: this.my.approved,
-                    creator: Boolean(room.creator_uuid === user_uuid),
-                    video_enabled: this.my.video_enabled,
-                    audio_enabled: this.my.audio_enabled,
+                    name: data.name,
+                    approved: data.approved,
+                    video_enabled: data.video_enabled,
+                    audio_enabled: data.audio_enabled,
                     pinned: false,
                     lastSoundTimestamp: null,
-                    status: this.my.status,
-                    is_creator: this.my.is_creator,
+                    status: data.status,
+                    is_creator: data.is_creator,
                 });
-
-                this.peers[user_uuid] = {
-                    stream: null,
-                    peer: null,
-                };
             }
-
-            this.participants[user_uuid].video_enabled = data.video_enabled;
-            this.participants[user_uuid].audio_enabled = data.audio_enabled;
-            this.participants[user_uuid].approved = data.approved;
-            this.participants[user_uuid].name = data.name;
-            this.participants[user_uuid].status = data.status;
-            this.participants[user_uuid].is_creator = data.is_creator;
 
             this.participants[user_uuid].peer = new SimplePeer({
                 initiator: am_initiator,
@@ -145,20 +116,82 @@ export function wsLibs() {
                 debug: 3,
             });
 
-            this.participants[user_uuid].peer.on("signal", (data) => {
+            const peer = this.participants[user_uuid].peer;
+            peer.on("connect", () => {
+                let previousBytesReceived = 0;
+                let previousBytesSent = 0;
+
+                setInterval(() => {
+                    const peer = this.participants[user_uuid]?.peer;
+                    if (peer) {
+                        peer.getStats((_, stats) => {
+                            let currentBytesReceived = 0;
+                            let currentBytesSent = 0;
+
+                            for (let i = 0; i < stats.length; i++) {
+                                const report = stats[i];
+                                if (
+                                    report.type === "inbound-rtp" &&
+                                    report.bytesReceived
+                                ) {
+                                    currentBytesReceived += report.bytesReceived;
+                                } else if (
+                                    report.type === "outbound-rtp" &&
+                                    report.bytesSent
+                                ) {
+                                    currentBytesSent += report.bytesSent;
+                                }
+                            }
+                            
+
+                            const downloadSpeed =
+                                (currentBytesReceived - previousBytesReceived) /
+                                (1024 * 1024);
+                            const uploadSpeed =
+                                (currentBytesSent - previousBytesSent) /
+                                (1024 * 1024);
+
+                            this.participants[user_uuid].internet.download =
+                                downloadSpeed;
+                            this.participants[user_uuid].internet.upload =
+                                uploadSpeed;
+
+                            previousBytesReceived = currentBytesReceived;
+                            previousBytesSent = currentBytesSent;
+                        });
+                    }
+                }, 1000);
+            });
+
+            peer.on("signal", async (signal) => {
                 this.ws.send(
                     JSON.stringify({
                         type: "signal",
                         data: {
-                            signal: data,
+                            signal: signal,
                             user_uuid,
                         },
                     })
                 );
             });
 
-            this.participants[user_uuid].peer.on("stream", (stream) => {
-                this.peers[user_uuid].stream = stream;
+            peer.on("negotiate", () => {
+                console.log("Negosiasi ulang diperlukan.");
+            });
+
+            peer.on("data", (receivedData) => {
+                const { type, sender_uuid, data } = JSON.parse(receivedData);
+                if (type === "updateParticipantData") {
+                    const keys = Object.keys(data);
+                    for (let index = 0; index < keys.length; index++) {
+                        const key = keys[index];
+                        this.participants[sender_uuid][key] = data[key];
+                    }
+                }
+            });
+
+            peer.on("stream", (stream) => {
+                this.participants[user_uuid].stream = stream;
                 const elCard = document.querySelector(
                     `.small-videos .card-participant[data-user-id="${user_uuid}"]`
                 );
@@ -167,11 +200,11 @@ export function wsLibs() {
                 this.observer.observe(elCard);
             });
 
-            this.participants[user_uuid].peer.on("error", (err) => {
+            peer.on("error", (err) => {
                 console.error("Error terjadi:", err);
             });
 
-            this.participants[user_uuid].peer.on("close", () => {
+            peer.on("close", () => {
                 // Handle peer disconnection
                 console.warn(`Peer ${user_uuid} disconnected.`);
                 delete this.participants[user_uuid];
@@ -188,5 +221,6 @@ export function wsLibs() {
                 this.participants[user_uuid].peer.destroy();
             delete this.participants?.[user_uuid];
         },
+        logout() {},
     };
 }

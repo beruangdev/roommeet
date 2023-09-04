@@ -1,5 +1,5 @@
 <div
-    class="wrapper-controller fixed inset-x-0 bottom-0 z-30 h-16 bg-background-100 pl-2 pr-4 dark:bg-background-900 md:pr-8"
+    class="wrapper-controller fixed inset-x-0 bottom-0 z-30 bg-background-100 pl-2 pr-4 dark:bg-background-900 md:pr-8"
     x-show="showControllers"
     x-transition:enter="transition ease-out duration-300"
     x-transition:enter-start="opacity-0 translate-y-4"
@@ -15,7 +15,7 @@
             @click="toggleShowController(false)"
         ></div>
 
-        <div class="z-10 flex h-14 items-end">
+        <div class="z-10 flex items-end">
             <button
                 class="flex flex-col items-center justify-end rounded-lg px-2 pb-0.5 pt-1.5 hover:bg-background-50/50 dark:hover:bg-background-925 md:px-3"
                 type="button"
@@ -35,7 +35,7 @@
                 ></div>
             </button>
             <button
-                class="flex flex-col items-center justify-end rounded-lg px-2 pb-0.5 pt-1.5 hover:bg-background-50/50 dark:hover:bg-background-925 md:px-3"
+                class="relative flex flex-col items-center justify-end overflow-hidden rounded-lg px-2 pb-0.5 pt-1.5 hover:bg-background-50/50 dark:hover:bg-background-925 md:px-3"
                 type="button"
                 @click="toggleAudio"
             >
@@ -51,12 +51,16 @@
                     class="mt-1 w-max"
                     x-text="!my.audio_enabled ? 'Start Audio' : 'Stop Audio'"
                 ></div>
+                <div
+                    class="absolute bottom-0 right-0 w-[0.15rem] dark:bg-white"
+                    :style="`height: ${my.audioAplitudePercentage}%;`"
+                ></div>
             </button>
 
         </div>
-        <div class="z-10 hidden h-14 justify-center gap-x-1 md:flex">
+        <div class="z-10 flex justify-center gap-x-1">
             <button
-                class="flex basis-[11%] flex-col items-center justify-end rounded-lg px-2 pb-0.5 pt-1.5 hover:bg-background-50/50 dark:hover:bg-background-925 md:px-5"
+                class="flex flex-col items-center justify-end rounded-lg px-2 pb-0.5 pt-1.5 hover:bg-background-50/50 dark:hover:bg-background-925 md:w-24 md:px-5"
                 type="button"
             >
                 <x-heroicon-s-chat-bubble-left class="w-6" />
@@ -64,7 +68,7 @@
             </button>
             <template x-if="!my.onShareScreen">
                 <button
-                    class="flex basis-[13%] flex-col items-center justify-end rounded-lg px-3 pb-0.5 hover:bg-background-50/50 dark:hover:bg-background-925"
+                    class="hidden basis-[13%] flex-col items-center justify-end rounded-lg px-3 pb-0.5 hover:bg-background-50/50 dark:hover:bg-background-925 md:flex"
                     type="button"
                     @click="shareScreen"
                 >
@@ -84,14 +88,15 @@
             </template>
 
             <button
-                class="flex basis-[11%] flex-col items-center justify-end rounded-lg px-2 pb-0.5 pt-1.5 hover:bg-background-50/50 dark:hover:bg-background-925 md:px-5"
+                class="flex flex-col items-center justify-end rounded-lg px-2 pb-0.5 pt-1.5 hover:bg-background-50/50 dark:hover:bg-background-925 md:w-24 md:px-5"
                 type="button"
+                @click="toggleShowParticipantList(true)"
             >
                 <x-heroicon-s-users class="w-6" />
                 <div class="mt-1 w-max">Participants</div>
             </button>
         </div>
-        <div class="z-10 flex h-14 items-center">
+        <div class="z-10 flex place-self-center">
             <button
                 class="ml-auto rounded-md bg-red-700 px-5 py-1 text-white hover:bg-red-800"
                 type="button"

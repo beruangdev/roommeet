@@ -86,7 +86,8 @@ class RoomController extends Controller
             $user = auth()->user();
 
             $apiOrder = $this->getNextApiOrder();
-            $room_uuid = $apiOrder . explode("-", Str::uuid())[0];
+            // $room_uuid = $apiOrder . explode("-", Str::uuid())[0];
+            $room_uuid = $apiOrder . rand(100, 999);
             $user_name = $request->user_name;
             $participant_uuid = $user ? $user->id : $this->getOrCreateParticipantUuidFromCookie($request);
 
@@ -130,9 +131,9 @@ class RoomController extends Controller
             }
 
             $participant = $this->getOrCreateParticipant($request, $room, $user, $user_name);
-            // [$api_domain, $response] = $this->callJoinApi($room, $participant);
+            [$api_domain, $response] = $this->callJoinApi($room, $participant);
             // dd(compact("api_domain", "response"));
-            // $token = $response["token"];
+            $token = $response["token"];
 
             DB::commit();
             return view("meet.meet", compact("participant", "room"));
@@ -214,11 +215,16 @@ class RoomController extends Controller
     {
         $cookieName = "uuid";
         $cookieLifetime = 5 * 365 * 24 * 60 * 60; // 5 years in seconds
-        $uuid = $this->getDecryptedUuidFromCookie($cookieName);
+        // $uuid = $this->getDecryptedUuidFromCookie($cookieName);
+        // if (!$uuid) {
+        //     $uuid = Str::uuid();
+        //     $encryptedUuid = Crypt::encryptString($uuid);
+        //     setcookie($cookieName, $encryptedUuid, time() + $cookieLifetime, "/", $request->host(), false, true);
+        // }
+        $uuid = isset($_COOKIE[$cookieName]) ? $_COOKIE[$cookieName] : null;
         if (!$uuid) {
             $uuid = Str::uuid();
-            $encryptedUuid = Crypt::encryptString($uuid);
-            setcookie($cookieName, $encryptedUuid, time() + $cookieLifetime, "/", $request->host(), false, true);
+            setcookie($cookieName, $uuid, time() + $cookieLifetime, "/", $request->host(), false, true);
         }
         return $uuid;
     }
