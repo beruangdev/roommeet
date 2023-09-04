@@ -134,9 +134,9 @@ export default function wsHandler() {
         },
 
         getApiDomain() {
-            // const api_order = room.uuid[0];
-            // return `https://roommeet-${api_order}.deno.dev`;
-            return `http://localhost:3000`;
+            const api_order = room.uuid[0];
+            return `https://roommeet-${api_order}.deno.dev`;
+            // return `http://localhost:3000`;
         },
         async _joinRoom() {
             await this.$nextTick();
